@@ -68,7 +68,7 @@ void abrir_cofre (void) // atalho para abrir cofre
     {
         rotacionar_DRV (1,10, saidas); // abre tampa
         hcf_adc_ler (&pot); // lê o potenciometro 
-        mostra_lcd(); //mostrar valor do lcd
+        //mostra_lcd(); //mostrar valor do lcd
     }
 }
 
@@ -78,7 +78,7 @@ void fechar_cofre (void) //atalho para fechar cofre
   {
     rotacionar_DRV (0, 10, saidas); //fecha tampa
     hcf_adc_ler (pot); // le o potenciometro 
-    mostra_lcd(); //mostrar valor do lcd
+    //mostra_lcd(); //mostrar valor do lcd
   }
 }
 
@@ -118,7 +118,6 @@ void app_main(void)
     vTaskDelay(1000 / portTICK_PERIOD_MS); 
     lcd595_clear();
 
-
     /////////////////////////////////////////////////////////////////////////////   Periféricos inicializados
 
 
@@ -126,6 +125,9 @@ void app_main(void)
 
     //iniciar driver 
     DRV_init (6,7);
+    lcd595_write(1,1, " Digite a Senha "); //escreve no display
+    lcd595_write(2,1," [] [] [] [] ");  //escreve no display
+
 
     while (1)
 
@@ -134,8 +136,8 @@ void app_main(void)
     entradas = io_le_escreve(saidas);
     hcf_adc_ler(&pot); // ler valor do adc
 
-    sprintf (mostra, " %" PRIu32" ",pot);
-    lcd595_write (1,1, mostra );
+   /* sprintf (mostra, " %" PRIu32" ",pot);
+    lcd595_write (1,1, mostra );*/
 
     tecla = le_teclado (); // teclado 
 
@@ -144,46 +146,83 @@ void app_main(void)
     //if (controle ==0)
     {num1 = num1 * 10 + tecla -'0';}
      dig = dig + 1; //para funcionar os dígitos 
-    //else if (controle==1)
-    //{num2= num2 * 10 + tecla - '0';}//
+
     }
     
-    
     if (dig==1) // se tiver um digito, * na primeira posição//
-    {lcd595_init();
-    lcd595_write(1,1," Digite a Senha ");//escreve no display 
-    lcd595_write(2,1," [*] [ ] [ ] [ ]");//escreve no display 
+    {lcd595_write(1,1," Digite a Senha ");//escreve no display 
+     lcd595_write(2,1," [*] [ ] [ ] [ ] ");//escreve no display 
     }
 
     if (dig==2)  // se tiver dois digitos, ** nas duas primeiras posições//
-    {lcd595_init();
-    lcd595_write(1,1," Digite a Senha ");//escreve no display 
-    lcd595_write(2,1," [*] [*] [ ] [ ]");//escreve no display 
+    {lcd595_write(1,1," Digite a Senha ");//escreve no display 
+     lcd595_write(2,1," [*] [*] [ ] [ ] ");//escreve no display 
     }
 
     if (dig==3)  // se tiver um digito, * nas tres primeiras posições//
-    {lcd595_init();
-    lcd595_write(1,1," Digite a Senha ");//escreve no display 
-    lcd595_write(2,1," [*] [*] [*] [ ]");//escreve no display 
+    {lcd595_write(1,1," Digite a Senha ");//escreve no display 
+     lcd595_write(2,1," [*] [*] [*] [ ] ");//escreve no display 
     }
 
     if (dig==4)  // se tiver quatro digitos, * em todas as posições//
-    {lcd595_init();
-    lcd595_write(1,1," Digite a Senha ");//escreve no display 
-    lcd595_write(2,1," [*] [*] [*] [*]");//escreve no display 
+    {lcd595_write(1,1," Digite a Senha ");//escreve no display 
+     lcd595_write(2,1," [*] [*] [*] [*] ");//escreve no display 
     
       if (num1 == 2207)  //se tiver quatro digitos e a senha estiver correta, abrir cofre//
       {
+
         lcd595_write (1,1, "Senha Correta"  );//escreve no display 
         abrir_cofre (); //atalho para abrir cofre
-        vTaskDelay(300 / portTICK_PERIOD_MS); 
+        vTaskDelay (300/portTICK_PERIOD_MS); //delay para fechar
+        vTaskDelay (1000/portTICK_PERIOD_MS); //delay para fechar
+        lcd595_clear(); //limpa a ação anterior 
+        lcd595_write (1,1, "10 segundos"); //escreve no display 
+        vTaskDelay (1000/portTICK_PERIOD_MS); //delay para fechar
+        lcd595_clear();//limpa a ação anterior  
+        lcd595_write (1,1, "09 segundos"); //escreve no display 
+        vTaskDelay (1000/portTICK_PERIOD_MS); //delay para fechar
+        lcd595_clear ();//limpa a ação anterior 
+        lcd595_write (1,1, "08 segundos"); //escreve no display  
+        vTaskDelay(1000 / portTICK_PERIOD_MS); //delay para fechar    
+        lcd595_clear ();//limpa a ação anterior 
+        lcd595_write (1,1, "07 segundos"); //escreve no display 
+        vTaskDelay(1000 / portTICK_PERIOD_MS); //delay para fechar   
+        lcd595_clear ();//limpa a ação anterior 
+        lcd595_write (1,1, "06 segundos"); //escreve no display 
+        vTaskDelay(1000 / portTICK_PERIOD_MS);//delay para fechar  
+        lcd595_clear ();//limpa a ação anterior 
+        lcd595_write (1,1, "05 segundos"); //escreve no display
+        vTaskDelay(1000 / portTICK_PERIOD_MS);//delay para fechar   
+        lcd595_clear ();//limpa a ação anterior 
+        lcd595_write (1,1, "04 segundos");  //escreve no display
+        vTaskDelay(1000 / portTICK_PERIOD_MS);//delay para fechar   
+        lcd595_clear ();//limpa a ação anterior 
+        lcd595_write (1,1, "03 segundos"); //escreve no display
+        vTaskDelay(1000 / portTICK_PERIOD_MS);//delay para fechar   
+        lcd595_clear ();//limpa a ação anterior 
+        lcd595_write (1,1, "02 segundos"); //escreve no display
+        vTaskDelay(1000 / portTICK_PERIOD_MS);//delay para fechar    
+        lcd595_clear ();//limpa a ação anterior 
+        lcd595_write (1,1, "01 segundos"); //escreve no display
+        vTaskDelay(1000 / portTICK_PERIOD_MS);//delay para fechar   
+        lcd595_clear ();//limpa a ação anterior 
+        lcd595_write (1,1, " 0 segundos" ); //escreve no display
+        vTaskDelay(1000 / portTICK_PERIOD_MS);//delay para fechar   
+        lcd595_clear (); //limpa a ação anterior  
         fechar_cofre();// atalho para fechar cofre
       }
     
      else
      {
-         lcd595_write (1,1, "Senha Incorreta" );//escreve no display 
+        lcd595_write(1,1, " Senha incorreta ");// senha incorreta 
+        vTaskDelay(1000 / portTICK_PERIOD_MS); //delay  
+        lcd595_write(1,1, " Digite a Senha "); //escreve no display
+        lcd595_write(2,1," [] [] [] [] "); //escreve no display   
+        controle = 0; //para reiniciar 
+        num1 = 0; //para reiniciar 
+        dig = 0;//para reiniciar 
      }
+     
     }
 
     if (tecla == '/') // tecla de abrir //
@@ -206,7 +245,6 @@ void app_main(void)
     /////////////////////////////////////////////////////////////////////////////////////   Fim do ramo principal
     
 }
-
 
 
 
